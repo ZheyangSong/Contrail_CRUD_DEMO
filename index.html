@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Juniper CRUD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Styles/custom-style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Cluster Management</h2>
+        <form action="#" methd="POST" class="col-xs-12">
+            <fieldset class="custom-rel-pos col-xs-12">
+                <legend class="custom-required">Clusters</legend>
+                <div class="crud-op-box btn-group btn-group-xs">
+                    <button type="button" class="btn btn-success" data-bind="click: _createCluster"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">Add New Server</span></button>
+                </div>
+                <!-- loop through clusters start -->
+                <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: clusters">
+                    <div class="cluster panel panel-default container custom-width-auto" data-bind="css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'cluster-template', data: {cluster: $data, HTMLStr: {cID: 'c-'+$index(), cDisplayID: 'c-'+$index()+'-display', cEditID: 'c-'+$index()+'-edit', cCURDOpMenuBtnID: 'c-'+$index()+'-curd-menu', cIDFieldID: 'c-'+$index()+'-id', cStatusFieldID: 'c-'+$index()+'-status', cStatusOptions: $root.clusterStatusOptions, optionsCaption: 'Choose one...', cEmailFieldID: 'c-'+$index()+'-email', cPasswordFieldID: 'c-'+$index()+'password'}}}"></div>
+                </div>
+                <!-- loop through clusters end -->
+            </fieldset>
+        </form>
+    </div>
+    <!-- cluster template start -->
+    <script type="text/html" id="cluster-template">
+        <div data-bind="attr: {id: HTMLStr.cDisplayID, 'data-target': '#'+HTMLStr.cEditID, 'aria-controls': HTMLStr.cEditID}" class="cluster-brief-info panel-heading row" role="tab" data-toggle="collapse" aria-expanded="false">
+            <div class="custom-use-default-gutter col-sm-12">
+                <div class="panel-title">
+                    <div class="custom-info-list" data-bind="template: {name: 'basic-info-display-template', foreach: [{explaination: 'Cluster ID', info_content: cluster.id}, {explaination: 'Status', info_content: cluster.status}]}">
+                    </div>
+                </div>
+            </div>
+            <span class="caret custom-toggle-indicator"></span>
+            <div class="crud-op-box btn-group btn-group-xs" data-bind="template: {name: 'crud-operation-menu-template', data: {menuBtnID: HTMLStr.cID+'-menu-btn', menuOperandName: 'Cluster '+cluster.id, operand: cluster}}"></div>
+        </div>
+        <div data-bind="attr: {id: HTMLStr.cEditID, 'aria-labelledby': HTMLStr.cDisplayID}, css: {'in': cluster._isEditing}" class="c-editable-info custom-form-group-wrapper panel-collapse collapse row" role="tabpanel">
+            <div class="form-group col-xs-6 col-md-3">
+                <label data-bind="attr: {for: HTMLStr.cIDFieldID" class="custom-required col-sm-12 control-label">ID:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.cIDFieldID}, textInput: cluster.id, enable: cluster._isEditing" type="text" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-xs-6 col-md-3">
+                <label data-bind="attr: {for: HTMLStr.cStatusFieldID}" class="custom-required col-sm-12 control-label">Status:</label>
+                <div class="col-sm-12">
+                    <select data-bind="attr: {id: HTMLStr.cStatusFieldID}, options: HTMLStr.cStatusOptions, optionsText: $root.util.capitalize, optionsCaption: HTMLStr.optionsCaption, value: cluster.status, enable: cluster._isEditing" class="form-control" required></select>
+                </div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                <label data-bind="attr: {for: HTMLStr.cEmailFieldID}" class="col-sm-12 control-label">Email:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.cEmailFieldID}, value: cluster.email, enable: cluster._isEditing" type="email" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group col-xs-12 col-sm-6 col-md-3">
+                <label data-bind="attr: {for: HTMLStr.cPasswordFieldID}" class="col-sm-12 control-label">Password:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.cPasswordFieldID}, value: cluster.password, enable: cluster._isEditing" type="text" class="form-control" />
+                </div>
+            </div>
+            <fieldset class="custom-rel-pos col-xs-12">
+                <legend class="custom-required">Servers</legend>
+                <div class="crud-op-box btn-group btn-group-xs">
+                    <button type="button" class="btn btn-success" data-bind="click: cluster._createServer.bind(cluster)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">Add New Server</span></button>
+                </div>
+                <!-- loop through servers start -->
+                <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: cluster.servers">
+                    <div class="server panel panel-default container custom-width-auto" data-bind="css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'server-template', data: {server: $data, HTMLStr: {sID: $parent.HTMLStr.cID+'-s-'+$index(), sDisplayID: $parent.HTMLStr.cID+'-s-'+$index()+'-display', sEditID: $parent.HTMLStr.cID+'-s-'+$index()+'-edit', sIDFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-id', sMemFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-memory', sMgmtInterfaceFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-mgmt', sInstallImageFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-image', sRoleFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-role', sRoleOptions: $root.serverRoleOptions, optionsCaption: 'Choose one...', sTagPrefix: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-', sNewTagFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-new'}}}"></div>
+                </div>
+                <!-- loop through servers end -->
+            </fieldset>
+        </div>
+    </script>
+    <!-- cluster template end -->
+    <!-- server template start -->
+    <script type="text/html" id="server-template">
+        <div data-bind="attr: {id: HTMLStr.sDisplayID, 'data-target': '#' + HTMLStr.sEditID, 'data-controls': HTMLStr.sEditID}" class="server-brief-info panel-heading row" role="tab" data-toggle="collapse" aria-expanded="false">
+            <div class="custom-use-default-gutter col-sm-12">
+                <div class="panel-title">
+                    <div class="custom-info-list" data-bind="template: {name: 'basic-info-display-template', foreach: [{explaination: 'Server ID', info_content: server.id}, {explaination: 'Memory', info_content: server.memory_gb}, {explaination: 'Management Interface', info_content: server.management_interface}, {explaination: '# of interfaces', info_content: server.interfaces().length+' interface(s)'}, {explaination: 'Installed Image', info_content: server.installed_image}, {explaination: 'Role', info_content: server.role}]}"></div>
+                    <!-- loop through tags start -->
+                    <div data-bind="foreach: server.tags">
+                        <span class="label label-info" data-bind="text: $data"></span>
+                    </div>
+                    <!-- loop through tags end -->
+                </div>
+            </div>
+            <span class="caret custom-toggle-indicator"></span>
+            <div class="crud-op-box btn-group btn-group-xs" data-bind="template: {name: 'crud-operation-menu-template', data: {menuBtnID: HTMLStr.sID+'-menu-btn', menuOperandName: 'Server '+server.id, operand: server}}"></div>
+        </div>
+        <div data-bind="attr: {id: HTMLStr.sEditID, 'aria-labelledby': HTMLStr.sDisplayID}, css: {'in': server._isEditing}" class="server-editable-info custom-form-group-wrapper panel-collapse collapse row" role="tabpanel">
+            <div class="form-group col-sm-6 col-md-4">
+                <label data-bind="attr: {for: HTMLStr.sIDFieldID}" class="custom-required col-sm-12 control-label">Id:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.sIDFieldID}, value: server.id, enable: server._isEditing" type="text" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+                <label data-bind="attr: {for: HTMLStr.sMemFieldID}" class="custom-required col-sm-12 control-label">Memory (GB):</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.sMemFieldID}, value: server.memory_gb, enable: server._isEditing" type="number" min="0" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-4">
+                <label data-bind="attr: {for: HTMLStr.sMgmtInterfaceFieldID}" class="custom-required col-sm-12 control-label">Management Interface:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.sMgmtInterfaceFieldID}, value: server.management_interface, enable: server._isEditing" type="text" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label data-bind="attr: {for: HTMLStr.sInstallImageFieldID}" class="custom-required col-sm-12 control-label">Installed image:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.sInstallImageFieldID}, value: server.installed_image, enable: server._isEditing" type="text" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label data-bind="attr: {for: HTMLStr.sRoleFieldID}" class="col-sm-12 control-label">Role:</label>
+                <div class="col-sm-12">
+                    <select data-bind="attr: {id: HTMLStr.sRoleFieldID}, options: HTMLStr.sRoleOptions, optionsText: $root.util.capitalize, optionsCaption: HTMLStr.optionsCaption, value: server.role, enable: server._isEditing" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <fieldset>
+                    <legend class="custom-remove-border col-sm-2 control-label">Tags:</legend>
+                    <div class="col-sm-10">
+                        <div class="custom-height-auto form-control clearfix">
+                            <!-- loop through tags start -->
+                            <div data-bind="foreach: server.tags">
+                                <span class="custom-float-left">
+                                	<input data-bind="attr: {id: $parent.HTMLStr.sTagPrefix+$index()}, checked: $parent.server.tags.indexOf($data) !== -1, checkedValue: $data, enable: $parent.server._isEditing, click: $parent.server._removeTag.bind($parent.server)" type="checkbox" class="custom-zero-size" />
+                                	<label data-bind="attr: {for: $parent.HTMLStr.sTagPrefix+$index()}, text: $data" class="custom-as-tag label label-danger"></label>
+                                </span>
+                            </div>
+                            <!-- loop through tags end -->
+                            <div class="custom-float-left">
+                                <label data-bind="attr: {for: HTMLStr.sNewTagFieldID}" class="sr-only">New Tag</label>
+                                <input data-bind="attr: {id: HTMLStr.sNewTagFieldID}, textInput: server._newTagStr, enable: server._isEditing, event: {focusout: server._addTag.bind(server), keypress: server._addTag.bind(server)}" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <fieldset class="custom-rel-pos col-sm-12">
+                <legend class="custom-required">Interfaces</legend>
+                <div class="crud-op-box btn-group btn-group-xs">
+                    <button type="button" class="btn btn-success" data-bind="click: server._createInterface.bind(server)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">Add New Interface</span></button>
+                </div>
+                <!-- loop through Interfaces start -->
+                <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: server.interfaces">
+                    <div class="interface panel panel-default container custom-width-auto" data-bind="css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'interface-template', data: {interface: $data, HTMLStr: {iDisplayID: $parent.HTMLStr.sID+'-i-'+$index()+'-display', iEditID: $parent.HTMLStr.sID+'-i-'+$index()+'-edit', iIDFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-id', iIPFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-ip', iMACFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-mac'}}}"></div>
+                </div>
+                <!-- loop through Interfaces end -->
+            </fieldset>
+        </div>
+    </script>
+    <!-- server template end -->
+    <!-- interface template start -->
+    <script type="text/html" id="interface-template">
+        <div data-bind="attr: {id: HTMLStr.iDisplayID, 'data-target': '#'+HTMLStr.iEditID, 'aria-controls': HTMLStr.iEditID}" class="interface-brief-info panel-heading row" role="tab" data-toggle="collapse" aria-expanded="false">
+            <div class="col-sm-12 custom-use-default-gutter">
+                <div class="custom-info-list" class="panel-title" data-bind="template: {name:'basic-info-display-template', foreach: [{explaination: 'Interface ID', info_content: interface.id}, {explaination: 'IP Address', info_content: interface.ip_address}, {explaination: 'MAC Address', info_content: interface.mac_address}]}">
+                </div>
+            </div>
+            <span class="caret custom-toggle-indicator"></span>
+            <div class="crud-op-box btn-group btn-group-xs" data-bind="template: {name: 'crud-operation-menu-template', data: {menuBtnID: HTMLStr.iID+'-menu-btn', menuOperandName: 'Interface '+interface.id, operand: interface}}"></div>
+        </div>
+        <div data-bind="attr: {id: HTMLStr.iEditID, 'aria-labelledby': HTMLStr.iDisplayID}, css: {'in': interface._isEditing}" class="interface-editable-info custom-form-group-wrapper panel-collapse collapse row" role="tabpanel">
+            <div class="form-group col-sm-4">
+                <label data-bind="attr: {for: HTMLStr.iIDFieldID}" class="custom-required col-sm-12 control-label">ID:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.iIDFieldID}, value: interface.id, enable: interface._isEditing" type="text" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label data-bind="attr: {for: HTMLStr.iIPFieldID}" for="interface-$idx-ip" class="custom-required col-sm-12 control-label">IP Address:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.iIPFieldID}, value: interface.ip_address, enable: interface._isEditing" type="text" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label data-bind="attr: {for: HTMLStr.iMACFieldID}" for="interface-$idx-mac" class="col-sm-12 control-label">MAC Address:</label>
+                <div class="col-sm-12">
+                    <input data-bind="attr: {id: HTMLStr.iMACFieldID}, value: interface.mac_address, enable: interface._isEditing" type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- interface template end -->
+    <!-- basic info display template start -->
+    <script type="text/html" id="basic-info-display-template">
+    <!-- ko if: info_content -->
+        <span class="custom-tooltip"><span class="custom-tooltip-body" data-bind="text: explaination"></span><span data-bind="text: info_content"></span></span>
+        <!-- /ko -->
+    </script>
+    <!-- basic info display template start -->
+    <!-- crud operation mene template start -->
+    <script type="text/html" id="crud-operation-menu-template">
+        <button data-bind="attr: {id: menuBtnID}" type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span><span class="sr-only"><span>CRUD Operation Menu for</span><span data-bind="text: menuOperandName"></span></span>
+        </button>
+        <ul class="custom-dropdown dropdown-menu dropdown-menu-right" data-bind="attr: {'aria-labelledby': menuBtnID}, clickBubble: false">
+            <li>
+                <button type="button" class="btn btn-primary" data-bind="click: $root.operationMenu.edit.bind(this, operand), clickBubble: false, disable: operand._isEditing"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="hidden-xs">Edit</span><span class="sr-only"><span data-bind="text: menuOperandName"></span></span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-success" data-bind="click: $root.operationMenu.confirm.bind(this, operand), clickBubble: false, enable: operand._isEditing"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="hidden-xs">Complete</span><span class="sr-only"><span>Edit</span><span data-bind="text: menuOperandName"></span></span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-danger" data-bind="click: $root.operationMenu.cancel.bind(this, operand), clickBubble: false, enable: operand._isEditing"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="hidden-xs">Cancel</span><span class="sr-only"><span>Edit</span><span data-bind="text: menuOperandName"></span></span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-warning" data-bind="click: $root.operationMenu.remove.bind(this, operand), clickBubble: false, disable: operand._isEditing"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span class="hidden-xs">Remove</span><span class="sr-only"><span data-bind="text: menuOperandName"></span></span>
+                </button>
+            </li>
+        </ul>
+    </script>
+    <!-- crud operation mene template end -->
+    <script src="./JavaScript/mockCluster.js"></script>
+    <script src="./JavaScript/GlobalConstants.js"></script>
+    <script src="./JavaScript/Base.js"></script>
+    <script src="./JavaScript/Interface.js"></script>
+    <script src="./JavaScript/Server.js"></script>
+    <script src="./JavaScript/Cluster.js"></script>
+    <script src="./JavaScript/Clusters.js"></script>
+    <script src="./JavaScript/pageViewModel.js"></script>
+</body>
+
+</html>
