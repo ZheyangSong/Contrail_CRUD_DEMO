@@ -2,6 +2,7 @@
 A CRUD UI demo built with jQuery, BootStrap and KnockoutJS
 
 ## JSON Schema
+```json
   {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "http://opencontrail.org",
@@ -113,3 +114,4 @@ A CRUD UI demo built with jQuery, BootStrap and KnockoutJS
         "cluster"
     ]
   }
+```
