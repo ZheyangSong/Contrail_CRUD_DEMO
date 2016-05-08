@@ -1,0 +1,166 @@
+[class*="row"] {
+    font-size: 0;
+}
+
+[class*="row"] > * {
+    font-size: initial;
+}
+
+.custom-form-group-wrapper {
+    padding: 20px 15px;
+}
+
+.custom-float-left {
+    float: left;
+    margin-bottom: 5px;
+}
+
+.display-inline {
+    display: inline;
+}
+
+.btn-group
+.btn.display-block {
+	display: block;
+}
+
+.custom-zero-size {
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    clip: rect(0,0,0,0);
+}
+
+.custom-required:before {
+    content: "*";
+    color: red;
+    font-size: 1em;
+    margin-right: 2px;
+}
+
+.container.custom-width-auto {
+    width: auto;
+}
+
+[aria-expanded=true] > .caret {
+    transform: rotateX(180deg);
+}
+
+.caret.custom-toggle-indicator {
+    position: absolute;
+    left: 2px;
+    top: calc(50% - 4px);
+    border-width: 8px;
+    border-bottom-width: 0px;
+}
+
+input[type=checkbox]:focus ~ label {
+    outline: 2px solid rgb(77, 144, 254);
+}
+
+.custom-tooltip {
+    position: relative;
+}
+
+.custom-tooltip .custom-tooltip-body {
+    display: none;
+}
+
+.custom-tooltip:hover .custom-tooltip-body {
+    position: absolute;
+    display: block;
+    bottom: calc(100% + 5px);
+    left: 0;
+    background: black;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.custom-remove-border {
+    border: none;
+}
+
+.label.custom-as-tag {
+    font-size: 100%;
+}
+
+.form-control.custom-height-auto {
+    height: auto;
+}
+
+.cluster-brief-info,
+.server-brief-info,
+.interface-brief-info {
+    position: relative;
+}
+
+.custom-rel-pos {
+    position: relative;
+}
+
+.crud-op-box {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.control-label {
+	margin-bottom: 5px;
+}
+
+[class*="col-"]:not(.custom-use-default-gutter) {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.dropdown-menu.custom-dropdown {
+	min-width: auto;
+}
+
+.dropdown-menu.custom-dropdown .btn {
+	width: 100%;
+}
+
+.dropdown-menu.custom-dropdown .btn > span {
+	vertical-align: middle;
+}
+
+.dropdown-menu.custom-dropdown .btn > span + span {
+	margin-left: 5px;
+}
+
+@media (min-width: 750px) {
+	.dropdown-menu.custom-dropdown .btn {
+		text-align: left;
+	}
+}
+
+.dropdown-menu.custom-dropdown li {
+	margin: 3px;
+}
+
+.panel-heading {
+	min-height: 4.2rem;
+}
+
+.custom-info-list > span {
+	display: inline-block;
+}
+
+.custom-info-list > span:not(:last-of-type) {
+	position: relative;
+	margin-right: 10px;
+}
+
+.custom-info-list > span:not(:last-of-type):after {
+	content: "";
+	display: inline-block;
+	position: absolute;
+	left: calc(100% + 3px);
+	top: calc(50% - 1px);
+	width: 8px;
+	height: 1px;
+	border-top: 1px solid #C0C0C0;
+}
