@@ -8,3 +8,13 @@ var CONSTANTS = {
     }
 };
 // end
+
+// custom knockout bindings
+ko.bindingHandlers.accessDOM = {
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var accessor = valueAccessor();
+
+        accessor(element);
+    }
+};
+// end

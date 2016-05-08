@@ -2,6 +2,8 @@
 function Base(data, owner, holderName) {
     var self = this;
 
+    self._DOMElement = ko.observable(null);
+    self._isValid = ko.observable(false);
     self._status = ko.observable(data._status || CONSTANTS.CRUD_OPERAND_STATUS.DISPLAY);
     self._isEditing = ko.pureComputed(function() {
         var state = self._status();
@@ -20,6 +22,16 @@ function Base(data, owner, holderName) {
             }
         }, self);
     }
+
+    self._isValid.subscribe(function(newState) {
+        if (this._owner) {
+            if (!newState) {
+                this._owner._isValid(newState);
+            } else {
+                this._owner._valid();
+            }
+        }
+    }, self);
 }
 
 Base.prototype._discard = function(target, containerName) {
@@ -33,3 +45,17 @@ Base.prototype._create = function(owner, holderName) {
 
     owner._status(CONSTANTS.CRUD_OPERAND_STATUS.EDIT);
 };
+
+Base.prototype._valid = function() {
+    var isValid = true,
+        elem = this._DOMElement();
+
+    if (elem) {
+        var $elem = $(elem);
+
+        isValid = $elem.find('input, selector').valid();
+        this._isValid(isValid);
+    }
+
+    return isValid;
+}

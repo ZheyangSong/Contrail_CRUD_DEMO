@@ -21,19 +21,22 @@ $.extend(pageViewModel, {
             operand._status(CONSTANTS.CRUD_OPERAND_STATUS.EDIT);
         },
         confirm: function(operand) {
-            // send updated operand to backend service, in real scene
-            // before the operaned is stringified and sent out, some
-            // interal usage properties/methods need to be removed.
-            // As demo, the updated operand will be output to console
-            console.log("Old:\n", ko.toJS(operand._cache));
-            console.log("New:\n", ko.toJS(operand));
-            console.log("Send to: " + "some API URI");
+            // valid the submitted changes
+            if (operand._valid()) {
+                // send updated operand to backend service, in real scene
+                // before the operaned is stringified and sent out, some
+                // interal usage properties/methods need to be removed.
+                // As demo, the updated operand will be output to console
+                console.log("Old:\n", ko.toJS(operand._cache));
+                console.log("New:\n", ko.toJS(operand));
+                console.log("Send to: " + "some API URI");
 
-            // drop the cached old state
-            operand._cache = null;
+                // drop the cached old state
+                operand._cache = null;
 
-            // set operand's status back to display mode
-            operand._status(CONSTANTS.CRUD_OPERAND_STATUS.DISPLAY);
+                // set operand's status back to display mode
+                operand._status(CONSTANTS.CRUD_OPERAND_STATUS.DISPLAY);
+            }
         },
         cancel: function(operand) {
             if (operand._status() === CONSTANTS.CRUD_OPERAND_STATUS.CREATE) {
