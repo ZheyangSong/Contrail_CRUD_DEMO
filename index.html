@@ -22,7 +22,7 @@
                 </div>
                 <!-- loop through clusters start -->
                 <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: clusters">
-                    <div class="cluster panel panel-default container custom-width-auto" data-bind="css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'cluster-template', data: {cluster: $data, HTMLStr: {cID: 'c-'+$index(), cDisplayID: 'c-'+$index()+'-display', cEditID: 'c-'+$index()+'-edit', cCURDOpMenuBtnID: 'c-'+$index()+'-curd-menu', cIDFieldID: 'c-'+$index()+'-id', cStatusFieldID: 'c-'+$index()+'-status', cStatusOptions: $root.clusterStatusOptions, optionsCaption: 'Choose one...', cEmailFieldID: 'c-'+$index()+'-email', cPasswordFieldID: 'c-'+$index()+'password'}}}"></div>
+                    <div class="cluster panel panel-default container custom-width-auto" data-bind="accessDOM: _DOMElement, css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'cluster-template', data: {cluster: $data, HTMLStr: {cID: 'c-'+$index(), cDisplayID: 'c-'+$index()+'-display', cEditID: 'c-'+$index()+'-edit', cCURDOpMenuBtnID: 'c-'+$index()+'-curd-menu', cIDFieldID: 'c-'+$index()+'-id', cStatusFieldID: 'c-'+$index()+'-status', cStatusOptions: $root.clusterStatusOptions, optionsCaption: 'Choose one...', cEmailFieldID: 'c-'+$index()+'-email', cPasswordFieldID: 'c-'+$index()+'password'}}}"></div>
                 </div>
                 <!-- loop through clusters end -->
             </fieldset>
@@ -72,7 +72,7 @@
                 </div>
                 <!-- loop through servers start -->
                 <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: cluster.servers">
-                    <div class="server panel panel-default container custom-width-auto" data-bind="css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'server-template', data: {server: $data, HTMLStr: {sID: $parent.HTMLStr.cID+'-s-'+$index(), sDisplayID: $parent.HTMLStr.cID+'-s-'+$index()+'-display', sEditID: $parent.HTMLStr.cID+'-s-'+$index()+'-edit', sIDFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-id', sMemFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-memory', sMgmtInterfaceFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-mgmt', sInstallImageFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-image', sRoleFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-role', sRoleOptions: $root.serverRoleOptions, optionsCaption: 'Choose one...', sTagPrefix: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-', sNewTagFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-new'}}}"></div>
+                    <div class="server panel panel-default container custom-width-auto" data-bind="accessDOM: _DOMElement, css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'server-template', data: {server: $data, HTMLStr: {sID: $parent.HTMLStr.cID+'-s-'+$index(), sDisplayID: $parent.HTMLStr.cID+'-s-'+$index()+'-display', sEditID: $parent.HTMLStr.cID+'-s-'+$index()+'-edit', sIDFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-id', sMemFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-memory', sMgmtInterfaceFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-mgmt', sInstallImageFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-image', sRoleFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-role', sRoleOptions: $root.serverRoleOptions, optionsCaption: 'Choose one...', sTagPrefix: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-', sNewTagFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-new'}}}"></div>
                 </div>
                 <!-- loop through servers end -->
             </fieldset>
@@ -154,7 +154,7 @@
                 </div>
                 <!-- loop through Interfaces start -->
                 <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: server.interfaces">
-                    <div class="interface panel panel-default container custom-width-auto" data-bind="css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'interface-template', data: {interface: $data, HTMLStr: {iDisplayID: $parent.HTMLStr.sID+'-i-'+$index()+'-display', iEditID: $parent.HTMLStr.sID+'-i-'+$index()+'-edit', iIDFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-id', iIPFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-ip', iMACFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-mac'}}}"></div>
+                    <div class="interface panel panel-default container custom-width-auto" data-bind="accessDOM: _DOMElement, css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'interface-template', data: {interface: $data, HTMLStr: {iDisplayID: $parent.HTMLStr.sID+'-i-'+$index()+'-display', iEditID: $parent.HTMLStr.sID+'-i-'+$index()+'-edit', iIDFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-id', iIPFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-ip', iMACFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-mac'}}}"></div>
                 </div>
                 <!-- loop through Interfaces end -->
             </fieldset>
