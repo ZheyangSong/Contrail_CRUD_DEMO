@@ -130,3 +130,6 @@ Due to time limit of the initial implementation, this demo is still flawed. Some
 
 3. Update mechanism of communication between ancesters and decendants during validtion.
    In current implementation, in some senario, validation in decendants will cause their ancesters to run validation. This hurts performance when the model growns larger.
+
+4. Add task runner, CSS preprocessor, unit-testing and documentation.
+   There's no task runner, CSS preprocessor and testing runner used in this developement yet. By adding task runner (such as Gulp) and unit-testing framework (such as Jasmine), better code quality can be guaranteed. Also, based on the task runner, CSS processor (such as SASS) can make the CSS more maintainable and documentation (such as JSdoc) can also improve the maintainability of JS code.
