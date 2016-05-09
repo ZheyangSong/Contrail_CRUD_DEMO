@@ -17,10 +17,25 @@ function ServerVM(data, owner, holderName) {
     }));
 
     self._newTagStr = ko.observable("");
+    self._noInterface = ko.pureComputed(function() {
+        var ret = (this.interfaces().length === 0);
+
+        if (ret && this._owner) {
+            this._owner._isValid(false);
+        }
+
+        return ret;
+    }, self);
 }
 
 ServerVM.prototype = Object.create(Base.prototype);
 ServerVM.prototype.constructor = ServerVM;
+
+ServerVM.prototype._valid = function() {
+    var isValidField = Base.prototype._valid.call(this);
+
+    return isValidField && !this._noInterface();
+};
 
 ServerVM.prototype._createInterface = function() {
     InterfaceVM.prototype._create(this, 'interfaces');
