@@ -15,14 +15,14 @@
     <div class="container">
         <h2>Cluster Management</h2>
         <form action="#" methd="POST" class="col-xs-12">
-            <fieldset class="custom-rel-pos col-xs-12">
-                <legend class="custom-required">Clusters</legend>
+            <fieldset class="clusters custom-rel-pos col-xs-12">
+                <legend class="custom-required" data-bind="css: {'alert-danger': _noCluster}">Clusters <span class="important-message" data-bind="css: {'hidden': !_noCluster()}">Must have at least one cluster!</span></legend>
                 <div class="crud-op-box btn-group btn-group-xs">
                     <button type="button" class="btn btn-success" data-bind="click: _createCluster"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">Add New Server</span></button>
                 </div>
                 <!-- loop through clusters start -->
                 <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: clusters">
-                    <div class="cluster panel panel-default container custom-width-auto" data-bind="accessDOM: _DOMElement, css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'cluster-template', data: {cluster: $data, HTMLStr: {cID: 'c-'+$index(), cDisplayID: 'c-'+$index()+'-display', cEditID: 'c-'+$index()+'-edit', cCURDOpMenuBtnID: 'c-'+$index()+'-curd-menu', cIDFieldID: 'c-'+$index()+'-id', cStatusFieldID: 'c-'+$index()+'-status', cStatusOptions: $root.clusterStatusOptions, optionsCaption: 'Choose one...', cEmailFieldID: 'c-'+$index()+'-email', cPasswordFieldID: 'c-'+$index()+'password'}}}"></div>
+                    <div class="cluster panel panel-default container custom-width-auto" data-bind="attr: {id: 'c-'+$index()}, accessTagID: _DOMElementID, css: {'panel-primary': (_isEditing() && _isValid()), 'panel-default': !_isEditing(), 'panel-danger': !_isValid()}, template: {name: 'cluster-template', data: {cluster: $data, HTMLStr: {cID: 'c-'+$index(), cDisplayID: 'c-'+$index()+'-display', cEditID: 'c-'+$index()+'-edit', cCURDOpMenuBtnID: 'c-'+$index()+'-curd-menu', cIDFieldID: 'c-'+$index()+'-id', cStatusFieldID: 'c-'+$index()+'-status', cStatusOptions: $root.clusterStatusOptions, optionsCaption: 'Choose one...', cEmailFieldID: 'c-'+$index()+'-email', cPasswordFieldID: 'c-'+$index()+'password'}}}"></div>
                 </div>
                 <!-- loop through clusters end -->
             </fieldset>
@@ -42,7 +42,7 @@
         </div>
         <div data-bind="attr: {id: HTMLStr.cEditID, 'aria-labelledby': HTMLStr.cDisplayID}, css: {'in': cluster._isEditing}" class="c-editable-info custom-form-group-wrapper panel-collapse collapse row" role="tabpanel">
             <div class="form-group col-xs-6 col-md-3">
-                <label data-bind="attr: {for: HTMLStr.cIDFieldID" class="custom-required col-sm-12 control-label">ID:</label>
+                <label data-bind="attr: {for: HTMLStr.cIDFieldID}" class="custom-required col-sm-12 control-label">ID:</label>
                 <div class="col-sm-12">
                     <input data-bind="attr: {id: HTMLStr.cIDFieldID}, textInput: cluster.id, enable: cluster._isEditing" type="text" class="form-control" required />
                 </div>
@@ -65,14 +65,14 @@
                     <input data-bind="attr: {id: HTMLStr.cPasswordFieldID}, value: cluster.password, enable: cluster._isEditing" type="text" class="form-control" />
                 </div>
             </div>
-            <fieldset class="custom-rel-pos col-xs-12">
-                <legend class="custom-required">Servers</legend>
+            <fieldset class="servers custom-rel-pos col-xs-12">
+                <legend class="custom-required" data-bind="css: {'alert-danger': cluster._noServer}">Servers <span class="important-message" data-bind="css: {'hidden': !cluster._noServer()}">Must have at least one Server!</span></legend>
                 <div class="crud-op-box btn-group btn-group-xs">
                     <button type="button" class="btn btn-success" data-bind="click: cluster._createServer.bind(cluster)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">Add New Server</span></button>
                 </div>
                 <!-- loop through servers start -->
                 <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: cluster.servers">
-                    <div class="server panel panel-default container custom-width-auto" data-bind="accessDOM: _DOMElement, css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'server-template', data: {server: $data, HTMLStr: {sID: $parent.HTMLStr.cID+'-s-'+$index(), sDisplayID: $parent.HTMLStr.cID+'-s-'+$index()+'-display', sEditID: $parent.HTMLStr.cID+'-s-'+$index()+'-edit', sIDFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-id', sMemFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-memory', sMgmtInterfaceFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-mgmt', sInstallImageFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-image', sRoleFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-role', sRoleOptions: $root.serverRoleOptions, optionsCaption: 'Choose one...', sTagPrefix: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-', sNewTagFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-new'}}}"></div>
+                    <div class="server panel panel-default container custom-width-auto" data-bind="attr: {id: $parent.HTMLStr.cID+'-s-'+$index()}, accessTagID: _DOMElementID, css: {'panel-primary': (_isEditing() && _isValid()), 'panel-default': !_isEditing(), 'panel-danger': !_isValid()}, template: {name: 'server-template', data: {server: $data, HTMLStr: {sID: $parent.HTMLStr.cID+'-s-'+$index(), sDisplayID: $parent.HTMLStr.cID+'-s-'+$index()+'-display', sEditID: $parent.HTMLStr.cID+'-s-'+$index()+'-edit', sIDFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-id', sMemFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-memory', sMgmtInterfaceFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-mgmt', sInstallImageFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-image', sRoleFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-role', sRoleOptions: $root.serverRoleOptions, optionsCaption: 'Choose one...', sTagPrefix: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-', sNewTagFieldID: $parent.HTMLStr.cID+'-s-'+$index()+'-tag-new'}}}"></div>
                 </div>
                 <!-- loop through servers end -->
             </fieldset>
@@ -147,14 +147,14 @@
                     </div>
                 </fieldset>
             </div>
-            <fieldset class="custom-rel-pos col-sm-12">
-                <legend class="custom-required">Interfaces</legend>
+            <fieldset class="interfaces custom-rel-pos col-sm-12">
+                <legend class="custom-required" data-bind="css: {'alert-danger': server._noInterface}">Interfaces <span class="important-message" data-bind="css: {'hidden': !server._noInterface()}">Must have at least one server!</span></legend>
                 <div class="crud-op-box btn-group btn-group-xs">
                     <button type="button" class="btn btn-success" data-bind="click: server._createInterface.bind(server)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="sr-only">Add New Interface</span></button>
                 </div>
                 <!-- loop through Interfaces start -->
                 <div class="panel-group" role="tablist" aria-multiselectable="true" data-bind="foreach: server.interfaces">
-                    <div class="interface panel panel-default container custom-width-auto" data-bind="accessDOM: _DOMElement, css: {'panel-primary': _isEditing, 'panel-default': !_isEditing()}, template: {name: 'interface-template', data: {interface: $data, HTMLStr: {iDisplayID: $parent.HTMLStr.sID+'-i-'+$index()+'-display', iEditID: $parent.HTMLStr.sID+'-i-'+$index()+'-edit', iIDFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-id', iIPFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-ip', iMACFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-mac'}}}"></div>
+                    <div class="interface panel panel-default container custom-width-auto" data-bind="attr: {id: $parent.HTMLStr.sID+'-i-'+$index()}, accessTagID: _DOMElementID, css: {'panel-primary': (_isEditing() && _isValid()), 'panel-default': !_isEditing(), 'panel-danger': !_isValid()}, template: {name: 'interface-template', data: {interface: $data, HTMLStr: {iDisplayID: $parent.HTMLStr.sID+'-i-'+$index()+'-display', iEditID: $parent.HTMLStr.sID+'-i-'+$index()+'-edit', iIDFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-id', iIPFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-ip', iMACFieldID: $parent.HTMLStr.sID+'-i-'+$index()+'-mac'}}}"></div>
                 </div>
                 <!-- loop through Interfaces end -->
             </fieldset>
@@ -204,7 +204,7 @@
     <script type="text/html" id="crud-operation-menu-template">
         <button data-bind="attr: {id: menuBtnID}" type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span><span class="sr-only"><span>CRUD Operation Menu for</span><span data-bind="text: menuOperandName"></span></span>
         </button>
-        <ul class="custom-dropdown dropdown-menu dropdown-menu-right" data-bind="attr: {'aria-labelledby': menuBtnID}, clickBubble: false">
+        <ul class="custom-dropdown dropdown-menu dropdown-menu-right" data-bind="attr: {'aria-labelledby': menuBtnID}, click: function() { return false; }, clickBubble: false">
             <li>
                 <button type="button" class="btn btn-primary" data-bind="click: $root.operationMenu.edit.bind(this, operand), clickBubble: false, disable: operand._isEditing"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="hidden-xs">Edit</span><span class="sr-only"><span data-bind="text: menuOperandName"></span></span>
                 </button>
@@ -218,7 +218,7 @@
                 </button>
             </li>
             <li>
-                <button type="button" class="btn btn-warning" data-bind="click: $root.operationMenu.remove.bind(this, operand), clickBubble: false, disable: operand._isEditing"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span class="hidden-xs">Remove</span><span class="sr-only"><span data-bind="text: menuOperandName"></span></span>
+                <button type="button" class="btn btn-warning" data-bind="click: $root.operationMenu.remove.bind(this, operand), clickBubble: false, enable: operand._isRemovable"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span class="hidden-xs">Remove</span><span class="sr-only"><span data-bind="text: menuOperandName"></span></span>
                 </button>
             </li>
         </ul>

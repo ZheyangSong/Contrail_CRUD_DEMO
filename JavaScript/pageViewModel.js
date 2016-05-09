@@ -16,7 +16,11 @@ $.extend(pageViewModel, {
     operationMenu: {
         edit: function(operand) {
             // cache the current operand's status for possible recover later
+            // NOTE: since ko.toJS doesn't support serializing DOM element properly,
+            //       as a work around, add code to manually cache the DOM element.
+
             operand._cache = ko.toJS(operand);
+
             // set operand's status to edit mode to enable ueser editing
             operand._status(CONSTANTS.CRUD_OPERAND_STATUS.EDIT);
         },

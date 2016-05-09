@@ -13,4 +13,3 @@ function InterfaceVM(data, owner, holderName) {
 
 InterfaceVM.prototype = Object.create(Base.prototype);
 InterfaceVM.prototype.constructor = InterfaceVM;
-
