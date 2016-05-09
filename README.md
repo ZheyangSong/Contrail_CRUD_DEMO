@@ -1,5 +1,9 @@
 # Contrail_CRUD_DEMO
-A CRUD UI demo built with jQuery, BootStrap and KnockoutJS
+A CRUD UI demo built with jQuery/jQuery.validate, BootStrap and KnockoutJS
+
+This demo enables basic CRUD operantions at all three levels (cluster, server and interface). A basic validation mechanism is implemented to make sure rules defined in the JSON Schema can be fullfilled. As a pure UI demo, no server calls are actually made. All request data is output to the browser's console.
+
+Due to time limit of the initial implementation, this demo is still flawed. Some obvious improvements can be found in *To DO* section.
 
 ## JSON Schema
 ```json
@@ -115,3 +119,14 @@ A CRUD UI demo built with jQuery, BootStrap and KnockoutJS
     ]
   }
 ```
+## To-Do
+1. Add routing system using Backbone.js.
+   The lack of routing system causes this SPA not linkable and sharable.
+
+2. Refactor templates and introduce better templating system.
+   Current implementation takes advantage of KnockoutJS's template binding. But, this templating system introduces large amount of redundent code on the page. By introducing a new templating system, the page can become cleaner and leaner.
+
+   During the development, the three different levels of models are sharing similar view layout. In theory, these there view layouts can use one template by parameterizing and abstracting out the differences (html attributes and inner html differences). On the JavaScript code side, the three view models has shared a lot of common properties and methods by inhereting from one base class. But, after introducing the validation logic, extra shared code snippets were observed which is cause duplication for the time being. This can be addressed possibly by adding top-level utility methods or anther helper class.
+
+3. Update mechanism of communication between ancesters and decendants during validtion.
+   In current implementation, in some senario, validation in decendants will cause their ancesters to run validation. This hurts performance when the model growns larger.
